@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://cted2npu70nvn"]
+
+[ext_resource type="Texture2D" uid="uid://dkmcsvkbjri1c" path="res://assets/HDR_multi_nebulae_3.hdr" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://1q07unh1pg8n" path="res://assets/3d/earth/Earth_1_12756.glb" id="1_earth"]
+[ext_resource type="PackedScene" uid="uid://cueeky8pjierk" path="res://assets/3d/satellite/satellite_re.fbx" id="2_satellite"]
+[ext_resource type="Script" uid="uid://cahxgd4jgb3j6" path="res://scripts/intro_camera.gd" id="4_intro_cam"]
+[ext_resource type="Script" uid="uid://kd8lx4s100te" path="res://scripts/satellite_callout.gd" id="5_callout"]
+[ext_resource type="Script" uid="uid://bnqcqf3120qbl" path="res://scripts/demo_controller.gd" id="6_demo"]
+[ext_resource type="Script" uid="uid://bpg82quaqhscn" path="res://scripts/camera_settings_panel.gd" id="7_cam_settings"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1bvp3"]
+panorama = ExtResource("1_1bvp3")
+
+[sub_resource type="Sky" id="Sky_lquwl"]
+sky_material = SubResource("PanoramaSkyMaterial_1bvp3")
+
+[sub_resource type="Environment" id="Environment_7mycd"]
+background_mode = 2
+sky = SubResource("Sky_lquwl")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_callout"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.1, 0.15, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
+content_margin_left = 20.0
+content_margin_top = 15.0
+content_margin_right = 20.0
+content_margin_bottom = 15.0
+bg_color = Color(0.05, 0.05, 0.1, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.6, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Main" type="Node3D" unique_id=1268814497]
+
+[node name="DemoController" type="Node" parent="." unique_id=190481481]
+script = ExtResource("6_demo")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=724505017]
+environment = SubResource("Environment_7mycd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2076097931]
+transform = Transform3D(0.86601907, -0.2500069, 0.43302146, 0, 0.86602384, 0.5000028, -0.500011, -0.43301192, 0.74999315, 0, 198.3471, 772.8109)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="Earth" parent="." unique_id=791422653 instance=ExtResource("1_earth")]
+transform = Transform3D(0.45446467, 0.1457723, 0.6420376, 0.10977026, 0.7524479, -0.24854115, -0.64916277, 0.22928727, 0.4074494, 0, 0, 0)
+
+[node name="Satellite_parent" type="MeshInstance3D" parent="." unique_id=870360485]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.057177, 498.4602)
+
+[node name="Satellite" parent="Satellite_parent" unique_id=1664743611 instance=ExtResource("2_satellite")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -60.74563, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1854493941]
+transform = Transform3D(1, 0, 0, 0, 0.99427, 0.10693, 0, -0.10693, 0.99427, 0, 300, 2800)
+fov = 50.0
+script = ExtResource("4_intro_cam")
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1934433665]
+layer = 10
+
+[node name="SatelliteCallout" type="Control" parent="UILayer" unique_id=1781067838]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_callout")
+
+[node name="Panel" type="PanelContainer" parent="UILayer/SatelliteCallout" unique_id=718359193]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 200.0
+offset_right = 600.0
+offset_bottom = 260.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_callout")
+
+[node name="Label" type="Label" parent="UILayer/SatelliteCallout/Panel" unique_id=191976866]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "1. Satellite Orbit Insertion"
+horizontal_alignment = 1
+
+[node name="SpacePrompt" type="Label" parent="UILayer" unique_id=398359198]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -60.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "Press SPACE to continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CamViewLabel" type="Label" parent="UILayer" unique_id=450828023]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 32
+
+[node name="OrbitNavLabel" type="Label" parent="UILayer" unique_id=114256833]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = -60.0
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="CamSettingsPanel" type="PanelContainer" parent="UILayer" unique_id=1393482271]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 30.0
+offset_top = -180.0
+offset_right = 430.0
+offset_bottom = 180.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_settings")
+script = ExtResource("7_cam_settings")
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/CamSettingsPanel" unique_id=629511388]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="UILayer/CamSettingsPanel/VBox" unique_id=1397814478]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Camera Settings"
+horizontal_alignment = 1
+
+[node name="HBoxX" type="HBoxContainer" parent="UILayer/CamSettingsPanel/VBox" unique_id=1713843214]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LabelX" type="Label" parent="UILayer/CamSettingsPanel/VBox/HBoxX" unique_id=393836503]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "X"
+
+[node name="SliderX" type="HSlider" parent="UILayer/CamSettingsPanel/VBox/HBoxX" unique_id=300920574]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ValueX" type="Label" parent="UILayer/CamSettingsPanel/VBox/HBoxX" unique_id=1372292840]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
+
+[node name="HBoxY" type="HBoxContainer" parent="UILayer/CamSettingsPanel/VBox" unique_id=437073822]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LabelY" type="Label" parent="UILayer/CamSettingsPanel/VBox/HBoxY" unique_id=734053876]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Y"
+
+[node name="SliderY" type="HSlider" parent="UILayer/CamSettingsPanel/VBox/HBoxY" unique_id=133372887]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ValueY" type="Label" parent="UILayer/CamSettingsPanel/VBox/HBoxY" unique_id=1212387674]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
+
+[node name="HBoxZ" type="HBoxContainer" parent="UILayer/CamSettingsPanel/VBox" unique_id=1188923312]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LabelZ" type="Label" parent="UILayer/CamSettingsPanel/VBox/HBoxZ" unique_id=1377252148]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Z"
+
+[node name="SliderZ" type="HSlider" parent="UILayer/CamSettingsPanel/VBox/HBoxZ" unique_id=1555479771]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ValueZ" type="Label" parent="UILayer/CamSettingsPanel/VBox/HBoxZ" unique_id=1502178891]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
