@@ -21,3 +21,6 @@ assets/3d/**/*.png
 
 # Claude Code local settings
 .claude/
+
+#build
+build/
