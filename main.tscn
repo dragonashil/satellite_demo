@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://kd8lx4s100te" path="res://scripts/satellite_callout.gd" id="5_callout"]
 [ext_resource type="Script" uid="uid://bnqcqf3120qbl" path="res://scripts/demo_controller.gd" id="6_demo"]
 [ext_resource type="Script" uid="uid://bpg82quaqhscn" path="res://scripts/camera_settings_panel.gd" id="7_cam_settings"]
+[ext_resource type="Script" path="res://scripts/start_screen.gd" id="8_start_screen"]
+[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="9_pause_menu"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1bvp3"]
 panorama = ExtResource("1_1bvp3")
@@ -34,6 +36,70 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+content_margin_left = 40.0
+content_margin_top = 12.0
+content_margin_right = 40.0
+content_margin_bottom = 12.0
+bg_color = Color(0.15, 0.15, 0.2, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.7, 0.7, 0.8, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+content_margin_left = 40.0
+content_margin_top = 12.0
+content_margin_right = 40.0
+content_margin_bottom = 12.0
+bg_color = Color(0.25, 0.25, 0.35, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+content_margin_left = 40.0
+content_margin_top = 12.0
+content_margin_right = 40.0
+content_margin_bottom = 12.0
+bg_color = Color(0.1, 0.1, 0.15, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.6, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_panel"]
+content_margin_left = 40.0
+content_margin_top = 30.0
+content_margin_right = 40.0
+content_margin_bottom = 30.0
+bg_color = Color(0.05, 0.05, 0.1, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.6, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
 content_margin_left = 20.0
 content_margin_top = 15.0
@@ -59,7 +125,7 @@ script = ExtResource("6_demo")
 environment = SubResource("Environment_7mycd")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2076097931]
-transform = Transform3D(0.86601907, -0.2500069, 0.43302146, 0, 0.86602384, 0.5000028, -0.500011, -0.43301192, 0.74999315, 0, 198.3471, 772.8109)
+transform = Transform3D(0.86601907, -0.25000688, 0.43302143, 0.17879678, 0.96360147, 0.19875595, -0.46695045, -0.094703555, 0.8791977, 0, 85.16371, 780.7966)
 light_energy = 1.5
 shadow_enabled = true
 
@@ -226,3 +292,132 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "0"
 horizontal_alignment = 2
+
+[node name="StartScreen" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_start_screen")
+
+[node name="BG" type="ColorRect" parent="UILayer/StartScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.02, 0.05, 0.85)
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/StartScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Title" type="Label" parent="UILayer/StartScreen/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Satellite Orbit Demo"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="UILayer/StartScreen/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Experience satellite orbital mechanics
+in an interactive 3D simulation.
+
+Observe orbit insertion, solar panel deployment,
+and compare different orbit types:
+GEO / LEO / MEO / Molniya"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="UILayer/StartScreen/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "START"
+
+[node name="PauseMenu" type="Control" parent="UILayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_pause_menu")
+
+[node name="BG" type="ColorRect" parent="UILayer/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.5)
+
+[node name="Panel" type="PanelContainer" parent="UILayer/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -150.0
+offset_right = 180.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pause_panel")
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/PauseMenu/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="UILayer/PauseMenu/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "Restart"
+
+[node name="ExitButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "Exit"

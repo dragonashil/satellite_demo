@@ -26,8 +26,11 @@ const PHASE3_DURATION := 5.0
 @onready var _cam_view_label: Label = $"../UILayer/CamViewLabel"
 @onready var _orbit_nav_label: Label = $"../UILayer/OrbitNavLabel"
 @onready var _cam_settings: PanelContainer = $"../UILayer/CamSettingsPanel"
+@onready var _start_screen: Control = $"../UILayer/StartScreen"
+@onready var _pause_menu: Control = $"../UILayer/PauseMenu"
 
 var _state: State = State.INTRO
+var _started := false
 var _anim_player: AnimationPlayer
 var _blink_tween: Tween
 var _tracking_satellite := false
@@ -43,6 +46,7 @@ var _earth_rotating := false
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_prompt.modulate.a = 0.0
 	_cam_view_label.modulate.a = 0.0
 	_orbit_nav_label.modulate.a = 0.0
@@ -62,6 +66,12 @@ func _ready() -> void:
 
 	_cam_settings.setup(_camera_rig)
 	_cam_settings.visible = false
+
+	# 시작 화면 연결
+	_start_screen.start_pressed.connect(_on_start_pressed)
+
+	# 일시정지 메뉴 연결
+	_pause_menu.set_cam_settings(_cam_settings)
 
 
 func _find_animation_player() -> void:
@@ -84,6 +94,8 @@ func _find_node_by_type(node: Node, type_name: String) -> Node:
 
 
 func _process(delta: float) -> void:
+	if get_tree().paused:
+		return
 	if _tracking_satellite:
 		_camera.global_position = _satellite.global_position + _cam_offset
 		_camera.look_at(_satellite.global_position, Vector3.UP)
@@ -97,18 +109,24 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# 카메라 뷰 전환 (Phase 4~5)
-	if _camera_rig and _camera_rig.handle_input(event):
-		get_viewport().set_input_as_handled()
-		return
-
 	if not (event is InputEventKey and event.pressed):
 		return
 
-	# ESC: 카메라 설정 패널 토글
+	# ESC: 일시정지 메뉴 토글 (일시정지 중에도 동작)
 	if event.keycode == KEY_ESCAPE:
 		get_viewport().set_input_as_handled()
-		_cam_settings.toggle()
+		if not _started:
+			return
+		_pause_menu.toggle()
+		return
+
+	# 일시정지 중에는 다른 입력 무시
+	if get_tree().paused:
+		return
+
+	# 카메라 뷰 전환 (Phase 4~5)
+	if _camera_rig and _camera_rig.handle_input(event):
+		get_viewport().set_input_as_handled()
 		return
 
 	# SPACE: 단계 진행
@@ -138,6 +156,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 # === Phase 전환 ===
+
+func _on_start_pressed() -> void:
+	_started = true
+	_camera.start_intro()
+
 
 func _on_intro_finished() -> void:
 	_state = State.WAIT_PHASE2

@@ -32,8 +32,10 @@ var _active_tween: Tween
 func _ready() -> void:
 	if skip_intro:
 		_jump_to_final()
+		_on_intro_complete()
 		return
-	start_intro()
+	# 시작 화면에서 start_pressed 시그널을 받을 때까지 대기
+	# demo_controller에서 start_intro()를 호출함
 
 
 func _process(_delta: float) -> void:

@@ -19,7 +19,6 @@ const VIEW_NAMES: Dictionary = {
 
 # 고정 뷰: 지구 중심 기준 절대 좌표 (슬라이더로 조정 가능)
 var view_positions: Dictionary = {
-	View.CLOSEUP: Vector3(80, 40, 120),
 	View.SIDE: Vector3(1400, 100, 0),
 	View.OVERVIEW: Vector3(0, 600, 1800),
 	View.TOPDOWN: Vector3(0, 1600, 1),
@@ -27,6 +26,10 @@ var view_positions: Dictionary = {
 
 # 고정 뷰의 look_at 대상 (모두 지구 중심)
 const FIXED_LOOK_TARGET := Vector3.ZERO
+
+# Closeup: 위성 뒤쪽(지구 반대편)에서 위성을 바라보는 추적 카메라
+var closeup_distance := 80.0   # 위성으로부터의 거리
+var closeup_height := 20.0     # 약간 위에서 내려다보는 높이 오프셋
 
 # Tracking: 위성 기준 오프셋 (슬라이더로 조정 가능)
 var tracking_offset := Vector3(0, 20, 60)
@@ -78,6 +81,14 @@ func handle_input(event: InputEvent) -> bool:
 	return false
 
 
+func _calc_closeup_position() -> Vector3:
+	# 위성에서 지구 반대 방향(바깥쪽)으로 카메라를 배치
+	var sat_pos := _satellite.global_position
+	var radial_dir := sat_pos.normalized()
+	# 지구 반대편으로 distance만큼 떨어진 위치 + 약간 위쪽 오프셋
+	return sat_pos + radial_dir * closeup_distance + Vector3.UP * closeup_height
+
+
 func switch_to(view: View) -> void:
 	_current_view = view
 
@@ -87,6 +98,8 @@ func switch_to(view: View) -> void:
 	var target_pos: Vector3
 	if view == View.TRACKING:
 		target_pos = _satellite.global_position + tracking_offset
+	elif view == View.CLOSEUP:
+		target_pos = _calc_closeup_position()
 	else:
 		target_pos = view_positions[view]
 
@@ -96,7 +109,7 @@ func switch_to(view: View) -> void:
 		.set_trans(Tween.TRANS_SINE)
 
 	# 전환 시 즉시 look_at 설정
-	var look_target := _satellite.global_position if view == View.TRACKING else FIXED_LOOK_TARGET
+	var look_target := _satellite.global_position if (view == View.TRACKING or view == View.CLOSEUP) else FIXED_LOOK_TARGET
 	_camera.look_at(look_target, Vector3.UP)
 
 	view_changed.emit(VIEW_NAMES[view])
@@ -106,8 +119,12 @@ func update(_delta: float) -> void:
 	if not _active:
 		return
 
-	if _current_view == View.TRACKING:
-		# 추적 카메라만 매 프레임 위성을 따라감
+	if _current_view == View.CLOSEUP:
+		# 클로즈업: 지구 반대편에서 위성을 따라가며 바라봄
+		_camera.global_position = _calc_closeup_position()
+		_camera.look_at(_satellite.global_position, Vector3.UP)
+	elif _current_view == View.TRACKING:
+		# 추적 카메라: 매 프레임 위성을 따라감
 		_camera.global_position = _satellite.global_position + tracking_offset
 		_camera.look_at(_satellite.global_position, Vector3.UP)
 	else:

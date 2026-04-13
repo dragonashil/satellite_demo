@@ -52,8 +52,10 @@ func _refresh() -> void:
 	_title_label.text = _camera_rig.get_current_view_name()
 
 	var pos: Vector3
-	if view == CameraRig.View.TRACKING:
-		pos = _camera_rig.TRACKING_OFFSET
+	if view == CameraRig.View.CLOSEUP:
+		pos = Vector3(_camera_rig.closeup_distance, _camera_rig.closeup_height, 0)
+	elif view == CameraRig.View.TRACKING:
+		pos = _camera_rig.tracking_offset
 	else:
 		pos = _camera_rig.view_positions[view]
 
@@ -87,7 +89,10 @@ func _apply_position(pos: Vector3) -> void:
 
 	var view := _camera_rig._current_view
 
-	if view == CameraRig.View.TRACKING:
+	if view == CameraRig.View.CLOSEUP:
+		_camera_rig.closeup_distance = pos.x
+		_camera_rig.closeup_height = pos.y
+	elif view == CameraRig.View.TRACKING:
 		_camera_rig.tracking_offset = pos
 	else:
 		_camera_rig.view_positions[view] = pos
