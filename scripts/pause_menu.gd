@@ -9,8 +9,6 @@ signal restarted
 @onready var _restart_btn: Button = $Panel/VBox/RestartButton
 @onready var _exit_btn: Button = $Panel/VBox/ExitButton
 
-var _cam_settings: PanelContainer
-
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -18,10 +16,6 @@ func _ready() -> void:
 	_resume_btn.pressed.connect(_on_resume)
 	_restart_btn.pressed.connect(_on_restart)
 	_exit_btn.pressed.connect(_on_exit)
-
-
-func set_cam_settings(panel: PanelContainer) -> void:
-	_cam_settings = panel
 
 
 func toggle() -> void:
@@ -38,8 +32,6 @@ func open() -> void:
 
 func close() -> void:
 	visible = false
-	if _cam_settings:
-		_cam_settings.visible = false
 	get_tree().paused = false
 
 

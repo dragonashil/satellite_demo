@@ -23,8 +23,6 @@ func _build_mesh() -> void:
 	_material.albedo_color = _params.color
 	_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_material.no_depth_test = true
-	_material.render_priority = 1
 
 	im.surface_begin(Mesh.PRIMITIVE_LINE_STRIP, _material)
 

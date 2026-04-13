@@ -7,8 +7,8 @@
 [ext_resource type="Script" uid="uid://kd8lx4s100te" path="res://scripts/satellite_callout.gd" id="5_callout"]
 [ext_resource type="Script" uid="uid://bnqcqf3120qbl" path="res://scripts/demo_controller.gd" id="6_demo"]
 [ext_resource type="Script" uid="uid://bpg82quaqhscn" path="res://scripts/camera_settings_panel.gd" id="7_cam_settings"]
-[ext_resource type="Script" path="res://scripts/start_screen.gd" id="8_start_screen"]
-[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="9_pause_menu"]
+[ext_resource type="Script" uid="uid://cnua0uc8l0xfa" path="res://scripts/start_screen.gd" id="8_start_screen"]
+[ext_resource type="Script" uid="uid://dfwroter0duj6" path="res://scripts/pause_menu.gd" id="9_pause_menu"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1bvp3"]
 panorama = ExtResource("1_1bvp3")
@@ -36,6 +36,22 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
+content_margin_left = 20.0
+content_margin_top = 15.0
+content_margin_right = 20.0
+content_margin_bottom = 15.0
+bg_color = Color(0.05, 0.05, 0.1, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.6, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
 content_margin_left = 40.0
 content_margin_top = 12.0
@@ -47,22 +63,6 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.7, 0.7, 0.8, 0.8)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
-content_margin_left = 40.0
-content_margin_top = 12.0
-content_margin_right = 40.0
-content_margin_bottom = 12.0
-bg_color = Color(0.25, 0.25, 0.35, 0.95)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.9)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -84,28 +84,28 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+content_margin_left = 40.0
+content_margin_top = 12.0
+content_margin_right = 40.0
+content_margin_bottom = 12.0
+bg_color = Color(0.25, 0.25, 0.35, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_panel"]
 content_margin_left = 40.0
 content_margin_top = 30.0
 content_margin_right = 40.0
 content_margin_bottom = 30.0
 bg_color = Color(0.05, 0.05, 0.1, 0.92)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.5, 0.5, 0.6, 0.8)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
-content_margin_left = 20.0
-content_margin_top = 15.0
-content_margin_right = 20.0
-content_margin_bottom = 15.0
-bg_color = Color(0.05, 0.05, 0.1, 0.9)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -130,7 +130,7 @@ light_energy = 1.5
 shadow_enabled = true
 
 [node name="Earth" parent="." unique_id=791422653 instance=ExtResource("1_earth")]
-transform = Transform3D(0.45446467, 0.1457723, 0.6420376, 0.10977026, 0.7524479, -0.24854115, -0.64916277, 0.22928727, 0.4074494, 0, 0, 0)
+transform = Transform3D(0.60123974, 0.08436504, 0.5209541, 0.23631063, 0.6630787, -0.3801102, -0.47187707, 0.43955553, 0.47341624, 0, 0, 0)
 
 [node name="Satellite_parent" type="MeshInstance3D" parent="." unique_id=870360485]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.057177, 498.4602)
@@ -194,6 +194,18 @@ offset_right = 400.0
 offset_bottom = 60.0
 theme_override_font_sizes/font_size = 32
 
+[node name="EscHintLabel" type="Label" parent="UILayer" unique_id=821005230]
+offset_left = 20.0
+offset_top = 58.0
+offset_right = 300.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "1~5: Camera View
+ESC: Menu
+C: Camera Option
+Arrow Left/Right: Change Orbit"
+
 [node name="OrbitNavLabel" type="Label" parent="UILayer" unique_id=114256833]
 anchors_preset = 7
 anchor_left = 0.5
@@ -209,13 +221,16 @@ horizontal_alignment = 1
 
 [node name="CamSettingsPanel" type="PanelContainer" parent="UILayer" unique_id=1393482271]
 visible = false
-anchors_preset = 4
+anchors_preset = 6
+anchor_left = 1.0
 anchor_top = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 30.0
+offset_left = -430.0
 offset_top = -180.0
-offset_right = 430.0
+offset_right = -30.0
 offset_bottom = 180.0
+grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_settings")
 script = ExtResource("7_cam_settings")
@@ -293,7 +308,7 @@ theme_override_font_sizes/font_size = 24
 text = "0"
 horizontal_alignment = 2
 
-[node name="StartScreen" type="Control" parent="UILayer"]
+[node name="StartScreen" type="Control" parent="UILayer" unique_id=1879968518]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -302,7 +317,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("8_start_screen")
 
-[node name="BG" type="ColorRect" parent="UILayer/StartScreen"]
+[node name="BG" type="ColorRect" parent="UILayer/StartScreen" unique_id=2059870058]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -311,7 +326,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.02, 0.05, 0.85)
 
-[node name="VBox" type="VBoxContainer" parent="UILayer/StartScreen"]
+[node name="VBox" type="VBoxContainer" parent="UILayer/StartScreen" unique_id=73714136]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -327,13 +342,13 @@ grow_vertical = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="Title" type="Label" parent="UILayer/StartScreen/VBox"]
+[node name="Title" type="Label" parent="UILayer/StartScreen/VBox" unique_id=1825730777]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Satellite Orbit Demo"
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="UILayer/StartScreen/VBox"]
+[node name="Description" type="Label" parent="UILayer/StartScreen/VBox" unique_id=2065805581]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Experience satellite orbital mechanics
@@ -344,16 +359,16 @@ and compare different orbit types:
 GEO / LEO / MEO / Molniya"
 horizontal_alignment = 1
 
-[node name="StartButton" type="Button" parent="UILayer/StartScreen/VBox"]
+[node name="StartButton" type="Button" parent="UILayer/StartScreen/VBox" unique_id=2135630063]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 text = "START"
 
-[node name="PauseMenu" type="Control" parent="UILayer"]
+[node name="PauseMenu" type="Control" parent="UILayer" unique_id=1057715045]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -363,16 +378,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_pause_menu")
 
-[node name="BG" type="ColorRect" parent="UILayer/PauseMenu"]
+[node name="BG" type="ColorRect" parent="UILayer/PauseMenu" unique_id=457977150]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0, 0.0, 0.0, 0.5)
+color = Color(0, 0, 0, 0.5)
 
-[node name="Panel" type="PanelContainer" parent="UILayer/PauseMenu"]
+[node name="Panel" type="PanelContainer" parent="UILayer/PauseMenu" unique_id=1087305895]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -387,37 +402,37 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pause_panel")
 
-[node name="VBox" type="VBoxContainer" parent="UILayer/PauseMenu/Panel"]
+[node name="VBox" type="VBoxContainer" parent="UILayer/PauseMenu/Panel" unique_id=1405591898]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Title" type="Label" parent="UILayer/PauseMenu/Panel/VBox"]
+[node name="Title" type="Label" parent="UILayer/PauseMenu/Panel/VBox" unique_id=351734454]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "PAUSED"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox"]
+[node name="ResumeButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox" unique_id=1492320435]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 text = "Resume"
 
-[node name="RestartButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox"]
+[node name="RestartButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox" unique_id=585073727]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 text = "Restart"
 
-[node name="ExitButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox"]
+[node name="ExitButton" type="Button" parent="UILayer/PauseMenu/Panel/VBox" unique_id=2139122266]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 text = "Exit"

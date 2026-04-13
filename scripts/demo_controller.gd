@@ -26,6 +26,7 @@ const PHASE3_DURATION := 5.0
 @onready var _cam_view_label: Label = $"../UILayer/CamViewLabel"
 @onready var _orbit_nav_label: Label = $"../UILayer/OrbitNavLabel"
 @onready var _cam_settings: PanelContainer = $"../UILayer/CamSettingsPanel"
+@onready var _esc_hint: Label = $"../UILayer/EscHintLabel"
 @onready var _start_screen: Control = $"../UILayer/StartScreen"
 @onready var _pause_menu: Control = $"../UILayer/PauseMenu"
 
@@ -43,6 +44,7 @@ var _current_orbit_path: OrbitPath
 var _current_orbit_index := 0
 var _orbit_types: Array[OrbitData.OrbitType] = []
 var _earth_rotating := false
+var _cam_settings_enabled := false
 
 
 func _ready() -> void:
@@ -50,6 +52,7 @@ func _ready() -> void:
 	_prompt.modulate.a = 0.0
 	_cam_view_label.modulate.a = 0.0
 	_orbit_nav_label.modulate.a = 0.0
+	_esc_hint.modulate.a = 0.0
 	_camera.intro_finished.connect(_on_intro_finished)
 	_find_animation_player()
 
@@ -70,8 +73,8 @@ func _ready() -> void:
 	# 시작 화면 연결
 	_start_screen.start_pressed.connect(_on_start_pressed)
 
-	# 일시정지 메뉴 연결
-	_pause_menu.set_cam_settings(_cam_settings)
+	# 카메라 설정 패널은 Phase 4 이후 C키로 토글
+	_cam_settings.process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func _find_animation_player() -> void:
@@ -122,6 +125,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# 일시정지 중에는 다른 입력 무시
 	if get_tree().paused:
+		return
+
+	# C: 카메라 설정 패널 토글 (Phase 4 이후)
+	if event.keycode == KEY_C and _cam_settings_enabled:
+		get_viewport().set_input_as_handled()
+		_cam_settings.toggle()
 		return
 
 	# 카메라 뷰 전환 (Phase 4~5)
@@ -271,14 +280,12 @@ func _start_phase4() -> void:
 	# 카메라를 줌아웃하여 궤도 전체가 보이도록
 	_camera_rig.activate(CameraRig.View.OVERVIEW)
 	_cam_view_label.modulate.a = 1.0
+	_esc_hint.modulate.a = 1.0
+	_cam_settings_enabled = true
 
-	# 위성을 궤도 위치로 부드럽게 이동 후 공전 시작
-	var target_pos := _orbit_mover._calc_position(start_angle)
-	var move_tween := create_tween()
-	move_tween.tween_property(_satellite, "global_position", target_pos, 2.0)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
-	move_tween.tween_callback(_on_phase4_orbit_ready)
+	# 위성을 궤도 위치로 즉시 워프
+	_satellite.global_position = _orbit_mover._calc_position(start_angle)
+	_on_phase4_orbit_ready()
 
 
 func _on_phase4_orbit_ready() -> void:
